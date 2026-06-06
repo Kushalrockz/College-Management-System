@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Registration - College Management System</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+html, body{
+height:100%;
+}
+
+body{
+background:#f4f6f9;
+display:flex;
+flex-direction:column;
+}
+
+.header{
+background:#00264d;
+color:white;
+text-align:center;
+padding:25px;
+}
+
+.header h1{
+font-size:28px;
+}
+
+.header p{
+margin-top:5px;
+font-size:15px;
+}
+
+.container{
+width:600px;
+margin:40px auto;
+background:white;
+padding:35px;
+border-radius:8px;
+box-shadow:0 6px 18px rgba(0,0,0,0.2);
+flex:1;
+}
+
+.container h2{
+text-align:center;
+margin-bottom:25px;
+color:#00264d;
+}
+
+.form-row{
+display:flex;
+gap:15px;
+}
+
+.form-group{
+flex:1;
+display:flex;
+flex-direction:column;
+}
+
+label{
+font-weight:bold;
+margin-bottom:5px;
+}
+
+input, select{
+padding:10px;
+border:1px solid #ccc;
+border-radius:5px;
+margin-bottom:6px;
+font-size:14px;
+}
+
+input:focus, select:focus{
+outline:none;
+border-color:#004080;
+}
+
+small{
+min-height:18px;
+margin-bottom:8px;
+font-size:12px;
+}
+
+.valid{
+color:green;
+}
+
+.invalid{
+color:red;
+}
+
+.show-pass{
+font-size:13px;
+margin-bottom:10px;
+color:#333;
+}
+
+.show-pass input{
+width:auto;
+margin-right:5px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#004080;
+color:white;
+border:none;
+border-radius:5px;
+font-size:16px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+margin-top:10px;
+}
+
+button:hover{
+background:#00264d;
+}
+
+.login-link{
+text-align:center;
+margin-top:15px;
+font-size:14px;
+}
+
+.login-link a{
+color:#004080;
+text-decoration:none;
+font-weight:bold;
+}
+
+.login-link a:hover{
+text-decoration:underline;
+}
+
+.footer{
+background:#00264d;
+color:white;
+text-align:center;
+padding:15px;
+margin-top:auto;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>K.H. Kabbur Institute of Engineering</h1>
+<p>College Management System</p>
+</div>
+
+<div class="container">
+
+<h2>User Registration</h2>
+
+<p style="text-align:center;color:#777;margin-bottom:20px;">
+Student self-registration only.
+</p>
+
+<form action="InsertUR.jsp" method="post" onsubmit="return validateForm()">
+
+<div class="form-row">
+
+<div class="form-group">
+<label>Name</label>
+<input type="text" name="name" id="name" required>
+<small id="nameMsg"></small>
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input type="email" name="email" id="email" required>
+<small id="emailMsg"></small>
+</div>
+
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" name="password" id="password" required>
+<small id="passwordMsg"></small>
+</div>
+
+<div class="form-group">
+<label>Confirm Password</label>
+<input type="password" id="confirmPassword" required>
+<small id="confirmMsg"></small>
+</div>
+
+</div>
+
+<div class="show-pass">
+<input type="checkbox" onclick="togglePassword()"> Show Password
+</div>
+
+<div class="form-row">
+
+<div class="form-group">
+<label>Contact</label>
+<input type="text" name="contact" id="contact" maxlength="10" required>
+<small id="contactMsg"></small>
+</div>
+
+<div class="form-group">
+<label>City</label>
+<input type="text" name="city" required>
+<small></small>
+</div>
+
+</div>
+
+<input type="hidden" name="role" value="Student">
+
+<div class="form-group">
+<label>Address</label>
+<input type="text" name="address" required>
+<small></small>
+</div>
+
+<button type="submit">Register</button>
+
+</form>
+
+<div class="login-link">
+Already have an account? <a href="Login.html">Login Here</a>
+</div>
+
+</div>
+
+<div class="footer">
+<p>&copy; 2026 KHKIE College Management System</p>
+</div>
+
+<script>
+
+function togglePassword(){
+    let pass = document.getElementById("password");
+    let confirm = document.getElementById("confirmPassword");
+
+    if(pass.type === "password"){
+        pass.type = "text";
+        confirm.type = "text";
+    }else{
+        pass.type = "password";
+        confirm.type = "password";
+    }
+}
+
+function validateEmail(){
+    let email = document.getElementById("email").value.trim();
+    let msg = document.getElementById("emailMsg");
+
+    let emailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+
+    let wrongDomains = [
+        "gaiml.com",
+        "gamil.com",
+        "gmial.com",
+        "gnail.com",
+        "gmail.co",
+        "gmail.con",
+        "gmail.cm"
+    ];
+
+    if(email === ""){
+        msg.innerHTML = "Email is required";
+        msg.className = "invalid";
+        return false;
+    }
+
+    let domain = email.split("@")[1];
+
+    if(wrongDomains.includes(domain)){
+        msg.innerHTML = "Wrong email domain. Did you mean gmail.com?";
+        msg.className = "invalid";
+        return false;
+    }
+
+    if(!emailPattern.test(email)){
+        msg.innerHTML = "Enter a valid Gmail address like student@gmail.com";
+        msg.className = "invalid";
+        return false;
+    }
+
+    msg.innerHTML = "Valid Gmail address";
+    msg.className = "valid";
+    return true;
+}
+
+function validatePassword(){
+    let password = document.getElementById("password").value;
+    let msg = document.getElementById("passwordMsg");
+
+    let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%&!*?]).{8,}$/;
+
+    if(!passwordPattern.test(password)){
+        msg.innerHTML = "Use 8+ chars, uppercase, lowercase, number and special character";
+        msg.className = "invalid";
+        return false;
+    }
+
+    msg.innerHTML = "Strong password";
+    msg.className = "valid";
+    return true;
+}
+
+function validateConfirmPassword(){
+    let password = document.getElementById("password").value;
+    let confirm = document.getElementById("confirmPassword").value;
+    let msg = document.getElementById("confirmMsg");
+
+    if(password !== confirm){
+        msg.innerHTML = "Passwords do not match";
+        msg.className = "invalid";
+        return false;
+    }
+
+    msg.innerHTML = "Passwords matched";
+    msg.className = "valid";
+    return true;
+}
+
+function validateContact(){
+    let contact = document.getElementById("contact").value.trim();
+    let msg = document.getElementById("contactMsg");
+
+    let contactPattern = /^[0-9]{10}$/;
+
+    if(!contactPattern.test(contact)){
+        msg.innerHTML = "Enter valid 10 digit contact number";
+        msg.className = "invalid";
+        return false;
+    }
+
+    msg.innerHTML = "Valid contact number";
+    msg.className = "valid";
+    return true;
+}
+
+function validateForm(){
+    let emailOk = validateEmail();
+    let passOk = validatePassword();
+    let confirmOk = validateConfirmPassword();
+    let contactOk = validateContact();
+
+    return emailOk && passOk && confirmOk && contactOk;
+}
+
+document.getElementById("email").addEventListener("keyup", validateEmail);
+document.getElementById("password").addEventListener("keyup", validatePassword);
+document.getElementById("confirmPassword").addEventListener("keyup", validateConfirmPassword);
+document.getElementById("contact").addEventListener("keyup", validateContact);
+
+</script>
+
+</body>
+</html>
